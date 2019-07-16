@@ -3,7 +3,7 @@ import os
 import configparser
 
 cp = configparser.ConfigParser()
-cpath = os.path.dirname(os.path.abspath(__file__))+r'\config.ini'
+cpath = os.path.dirname(os.path.abspath(__file__))+r'/config.ini'
 cp.read(cpath, encoding='gb18030')
 # user_agents
 UAS = [
@@ -30,4 +30,7 @@ MD_PWD = str(cp.get('MONGODB', 'pwd'))
 
 # tv_spider相关
 TV_SOURCE_URL = str(cp.get('TV_SPIDER', 'tv_source_url'))
+
+if __name__ == '__main__':
+    print(MD_DATABASE)
 

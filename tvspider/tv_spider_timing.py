@@ -1,11 +1,17 @@
 #!/usr/local/python3/bin/python3
 # -*- coding:utf-8 -*-
+import sys
+import os
+curPath = os.path.abspath(os.path.dirname(__file__))
+rootPath = os.path.split(curPath)[0]
+sys.path.append(rootPath)
+
 import time
-from config import config
 import random
 import requests
 from lxml import etree
 from db.log import logging
+from config import config
 from tvspider.cvs2mongodb import CSV2MD
 from tvspider.tv_spider_base import TVSpiderBase as TB
 
