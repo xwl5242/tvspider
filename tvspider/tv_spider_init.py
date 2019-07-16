@@ -34,10 +34,11 @@ class TVInitSpider(TB):
 
 
 if __name__ == '__main__':
+    pass
     # tv_init = TVInitSpider(4, 649)
     # tv_init.detail()
     # time.sleep(2)
-    cm = CSV2MD()
-    cm.save_init()
+    # cm = CSV2MD()
+    # cm.save_init()
 
 
