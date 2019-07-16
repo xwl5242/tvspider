@@ -89,23 +89,22 @@ class CSV2MD:
                         self.db.update('t_tv', {"tv_id": [tv_id, tv_id], "update_time": [m_tv.get('update_time'), tv.get('update_time')]})
                     else:
                         # 不存在
+                        tv_id = tv.get('tv_id')
                         self.db.insert_one('t_tv', CSV2MD.__build_tv(tv))
 
                     urls1 = list(tv.get('urls1'))
                     urls1 = [u for u in urls1 if u != ' ' and u != '\t']
                     urls2 = list(tv.get('urls2'))
                     urls2 = [u for u in urls2 if u != ' ' and u != '\t']
-                    c1 = self.db.count('t_tv_urls', {'tv_source': '1', 'tv_id': tv.get('tv_id')})
-                    c2 = self.db.count('t_tv_urls', {'tv_source': '2', 'tv_id': tv.get('tv_id')})
+                    c1 = self.db.count('t_tv_urls', {'tv_source': '1', 'tv_id': tv_id})
+                    c2 = self.db.count('t_tv_urls', {'tv_source': '2', 'tv_id': tv_id})
                     for u in urls1[c1:]:
-                        self.db.insert_one('t_tv_urls', {'id': str(uuid.uuid4()), 'tv_id': tv.get('tv_id'),
+                        self.db.insert_one('t_tv_urls', {'id': str(uuid.uuid4()), 'tv_id': tv_id,
                                                          'tv_source': '1', 'tv_url': str(u).replace(' ', '')})
                     for u in urls2[c2:]:
-                        self.db.insert_one('t_tv_urls', {'id': str(uuid.uuid4()), 'tv_id': tv.get('tv_id'),
+                        self.db.insert_one('t_tv_urls', {'id': str(uuid.uuid4()), 'tv_id': tv_id,
                                                          'tv_source': '2', 'tv_url': str(u).replace(' ', '')})
         except Exception as e:
-            import traceback
-            traceback.print_exc()
             logging.error(e)
         logging.info('end save timing csv data to mongodb')
 
