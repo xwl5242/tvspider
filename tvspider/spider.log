@@ -1,0 +1,36 @@
+Mon, 15 Jul 2019 17:08:25 cvs2mongodb.py[line:76] INFO read timing csv url data record:154
+Mon, 15 Jul 2019 17:08:25 cvs2mongodb.py[line:77] INFO start save timing csv data to mongodb
+Mon, 15 Jul 2019 17:08:25 cvs2mongodb.py[line:106] INFO end save timing csv data to mongodb
+Mon, 15 Jul 2019 17:08:54 cvs2mongodb.py[line:76] INFO read timing csv url data record:154
+Mon, 15 Jul 2019 17:08:54 cvs2mongodb.py[line:77] INFO start save timing csv data to mongodb
+Mon, 15 Jul 2019 17:08:54 cvs2mongodb.py[line:106] INFO end save timing csv data to mongodb
+Mon, 15 Jul 2019 17:16:41 cvs2mongodb.py[line:65] INFO read init csv tv_url data record:32232
+Mon, 15 Jul 2019 17:16:41 cvs2mongodb.py[line:66] INFO start save init csv data to mongodb
+Mon, 15 Jul 2019 17:17:21 cvs2mongodb.py[line:72] INFO end save init csv data to mongodb
+Mon, 15 Jul 2019 17:18:25 tv_spider_timing.py[line:53] INFO fetch tv detail timing start...
+Mon, 15 Jul 2019 17:18:25 connectionpool.py[line:205] DEBUG Starting new HTTP connection (1): www.kuyunzy.tv:80
+Mon, 15 Jul 2019 17:18:26 connectionpool.py[line:393] DEBUG http://www.kuyunzy.tv:80 "GET / HTTP/1.1" 200 None
+Mon, 15 Jul 2019 17:18:26 connectionpool.py[line:205] DEBUG Starting new HTTP connection (1): www.kuyunzy.tv:80
+Mon, 15 Jul 2019 17:18:27 connectionpool.py[line:393] DEBUG http://www.kuyunzy.tv:80 "GET /?m=vod-index-pg-2.html HTTP/1.1" 200 None
+Mon, 15 Jul 2019 17:18:28 connectionpool.py[line:205] DEBUG Starting new HTTP connection (1): www.kuyunzy.tv:80
+Mon, 15 Jul 2019 17:18:28 connectionpool.py[line:393] DEBUG http://www.kuyunzy.tv:80 "GET /?m=vod-index-pg-3.html HTTP/1.1" 200 None
+Mon, 15 Jul 2019 17:18:28 connectionpool.py[line:205] DEBUG Starting new HTTP connection (1): www.kuyunzy.tv:80
+Mon, 15 Jul 2019 17:18:28 connectionpool.py[line:393] DEBUG http://www.kuyunzy.tv:80 "GET /?m=vod-index-pg-4.html HTTP/1.1" 200 None
+Mon, 15 Jul 2019 17:18:28 selector_events.py[line:53] DEBUG Using selector: SelectSelector
+Mon, 15 Jul 2019 17:18:32 tv_spider_timing.py[line:59] INFO fetch tv detail timing end...
+Mon, 15 Jul 2019 17:18:34 cvs2mongodb.py[line:77] INFO read timing csv url data record:154
+Mon, 15 Jul 2019 17:18:34 cvs2mongodb.py[line:78] INFO start save timing csv data to mongodb
+Mon, 15 Jul 2019 17:19:49 cvs2mongodb.py[line:109] INFO end save timing csv data to mongodb
+Tue, 16 Jul 2019 11:16:56 cvs2mongodb.py[line:66] INFO read init csv tv_url data record:32232
+Tue, 16 Jul 2019 11:16:56 cvs2mongodb.py[line:67] INFO start save init csv data to mongodb
+Tue, 16 Jul 2019 11:17:43 cvs2mongodb.py[line:73] INFO end save init csv data to mongodb
+Tue, 16 Jul 2019 11:21:39 tv_spider_timing.py[line:53] INFO fetch tv detail timing start...
+Tue, 16 Jul 2019 11:21:39 connectionpool.py[line:205] DEBUG Starting new HTTP connection (1): www.kuyunzy.tv:80
+Tue, 16 Jul 2019 11:21:39 connectionpool.py[line:393] DEBUG http://www.kuyunzy.tv:80 "GET / HTTP/1.1" 200 None
+Tue, 16 Jul 2019 11:21:39 connectionpool.py[line:205] DEBUG Starting new HTTP connection (1): www.kuyunzy.tv:80
+Tue, 16 Jul 2019 11:21:40 connectionpool.py[line:393] DEBUG http://www.kuyunzy.tv:80 "GET /?m=vod-index-pg-2.html HTTP/1.1" 200 None
+Tue, 16 Jul 2019 11:21:40 selector_events.py[line:53] DEBUG Using selector: SelectSelector
+Tue, 16 Jul 2019 11:21:42 tv_spider_timing.py[line:59] INFO fetch tv detail timing end...
+Tue, 16 Jul 2019 11:21:44 cvs2mongodb.py[line:78] INFO read timing csv url data record:93
+Tue, 16 Jul 2019 11:21:44 cvs2mongodb.py[line:79] INFO start save timing csv data to mongodb
+Tue, 16 Jul 2019 11:22:26 cvs2mongodb.py[line:110] INFO end save timing csv data to mongodb
