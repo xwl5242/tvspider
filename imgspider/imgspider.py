@@ -1,6 +1,6 @@
 #!/usr/local/python3/bin/python3
 # -*- coding:utf-8 -*-
-import config
+from config import config
 import random
 import aiohttp
 import asyncio

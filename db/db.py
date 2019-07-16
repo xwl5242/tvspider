@@ -1,5 +1,5 @@
 # -*- coding:utf-8 -*-
-import config
+from config import config
 from pymongo import MongoClient, ASCENDING, DESCENDING
 
 

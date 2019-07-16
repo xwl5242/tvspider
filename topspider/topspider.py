@@ -2,7 +2,7 @@
 # -*- coding:utf-8 -*-
 import time
 import uuid
-import config
+from config import config
 import random
 import requests
 from lxml import etree

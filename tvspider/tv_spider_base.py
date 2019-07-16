@@ -2,7 +2,7 @@
 # -*- coding:utf-8 -*-
 import json
 import uuid
-import config
+from config import config
 import random
 import asyncio
 import aiohttp

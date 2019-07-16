@@ -1,7 +1,7 @@
 #!/usr/local/python3/bin/python3
 # -*- coding:utf-8 -*-
 import time
-import config
+from config import config
 import random
 import requests
 from lxml import etree
