@@ -161,5 +161,4 @@ if __name__ == '__main__':
     # print(db.count('t_tv', {}))
     # print(db.count('t_tv_urls', {}))
     # db.insert_one('t_f_u', {'id': '1', 'f_title': '优视频', 'f_url': 'http://www.yoviptv.com', 'del_flag': '0'})
-    print(db.count('t_tv_banner_top', {}))
-
+    print(db.find('t_tv', {'tv_name': '摘下你的面具'}, [('update_time', 'desc')]))
