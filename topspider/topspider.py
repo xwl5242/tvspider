@@ -54,7 +54,7 @@ class TopSpider:
         try:
             url = self.tv_type_url_map.get(tv_type, '')
             if url and len(url) > 0:
-                self.db.delete('t_tv', {"tv_type": tv_type})
+                self.db.delete('t_tv_banner_top', {"tv_type": tv_type})
                 for u in url:
                     r = requests.get(u, headers={'User-Agent': random.choice(config.UAS)})
                     self.parse_top(r.content.decode('utf-8'))
