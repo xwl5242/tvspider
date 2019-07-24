@@ -9,7 +9,7 @@ from config import config
 import random
 import aiohttp
 import asyncio
-from db.db import DB
+from db.mysqldb import DB
 from db.log import logging
 
 
@@ -35,13 +35,13 @@ class ImgSpider:
             resp = resp.result()
             with open(f'/home/img/{resp[1]}.jpg', 'wb') as f:
                 f.write(resp[0])
-            self.db.update('t_tv', {"tv_id": [resp[1], resp[1]], "img_save": ['0', '1']})
+            self.db.update_tv_img_save(resp[1], '1')
 
     def batch_(self):
         """
         :return:
         """
-        tvs = self.db.find('t_tv', {"img_save": '0'}, [('update_time', 'desc')])
+        tvs = self.db.find_tv_by_img_save('0')
         tvs = [(tv['tv_id'], tv['tv_img']) for tv in tvs]
         batch = int(len(tvs) / 50) + 1
         for i in range(batch):

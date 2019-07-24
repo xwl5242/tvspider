@@ -49,6 +49,12 @@ class DB:
 
     @staticmethod
     @app_db
+    def insert_banner_top(cursor, top):
+        sql = "insert into t_tv_banner_top(id,tv_type,tv_name,tv_img) values (%s,%s,%s,%s)"
+        cursor.execute(sql, (top['id'], top['tv_type'], top['tv_name'], top['tv_img']))
+
+    @staticmethod
+    @app_db
     def find_tv_by_name(cursor, tv_name):
         sql = "select * from t_tv where tv_name=%s"
         cursor.execute(sql, (tv_name,))
@@ -57,9 +63,23 @@ class DB:
 
     @staticmethod
     @app_db
+    def find_tv_by_img_save(cursor, img_save):
+        sql = "select * from t_tv where img_save=%s"
+        cursor.execute(sql, (img_save,))
+        tvs = cursor.fetchall()
+        return tvs
+
+    @staticmethod
+    @app_db
     def update_tv(cursor, tv_id, update_time):
         sql = "update t_tv set update_time=%s where tv_id=%s"
-        cursor.execute(sql, (tv_id, update_time))
+        cursor.execute(sql, (update_time, tv_id))
+
+    @staticmethod
+    @app_db
+    def update_tv_img_save(cursor, tv_id, img_save):
+        sql = "update t_tv set img_save=%s where tv_id=%s"
+        cursor.execute(sql, (img_save, tv_id))
 
     @staticmethod
     @app_db
@@ -67,4 +87,9 @@ class DB:
         sql = "delete from t_tv_urls where tv_id=%s"
         cursor.execute(sql, (tv_id,))
 
+    @staticmethod
+    @app_db
+    def delete_banner_top_by_tv_type(cursor, tv_type):
+        sql = "delete from t_tv_banner_top where tv_type=%s"
+        cursor.execute(sql, (tv_type,))
 
