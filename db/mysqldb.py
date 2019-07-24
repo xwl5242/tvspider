@@ -98,6 +98,12 @@ class DB:
 
     @staticmethod
     @app_db
+    def update_tv_by(cursor, tv_id, update_time):
+        sql = "update t_tv_by set update_time=%s where tv_id=%s"
+        cursor.execute(sql, (update_time, tv_id))
+
+    @staticmethod
+    @app_db
     def update_tv_img_save(cursor, tv_id, img_save):
         sql = "update t_tv set img_save=%s where tv_id=%s"
         cursor.execute(sql, (img_save, tv_id))

@@ -97,8 +97,7 @@ class CSV2MD:
                     if m_tv:
                         # 已存在
                         tv_id = m_tv.get('tv_id')
-                        if ft == '0':
-                            self.db.update_tv(tv_id, tv.get('update_time'))
+                        self.db.update_tv(tv_id, tv.get('update_time')) if ft == '0' else self.db.update_tv_by(tv_id, tv.get('update_time'))
                     else:
                         # 不存在
                         tv_id = tv.get('tv_id')

@@ -78,9 +78,11 @@ class TVSpiderBase:
             if html and isinstance(html, str):
                 root = etree.HTML(html)
                 url = root.xpath("//span[@class='xing_vb4']/a/@href")
+                fetch_date = root.xpath("//span[@class ='xing_vb7']/text()")
                 for i, u in enumerate(url):
                     if u not in self.WEB_INDEX_URL_LIST:
                         self.WEB_INDEX_URL_LIST.append(u)
+                        self.WEB_INDEX_URL_TIME_MAP[f'{u[1:]}'] = fetch_date[i]
 
     def parse_index_html(self, resp):
         """
@@ -101,6 +103,8 @@ class TVSpiderBase:
     def parse_detail_by_html(self, resp):
         if resp and resp.result() and len(resp.result()) > 0:
             html = resp.result()[0]
+            refer = resp.result()[1]
+            refer = str(refer).replace(config.TV_SOURCE_URL_BY, '')
             if html and isinstance(html, str):
                 root = etree.HTML(html)
                 name_xpath_str = "//div[@class='vodInfo']//h2/text()"
@@ -108,7 +112,8 @@ class TVSpiderBase:
                 name = root.xpath(name_xpath_str)
                 urls = root.xpath(urls_xpath_str)
                 urls = [u for u in urls if u]
-                tv_vo = {'id': str(uuid.uuid4()), 'tv_name': name, 'urls': urls}
+                update_time = self.WEB_INDEX_URL_TIME_MAP.get(refer, '')
+                tv_vo = {'id': str(uuid.uuid4()), 'tv_name': name, 'urls': urls, 'update_time': update_time}
                 with open('urls_by.txt', 'a', encoding='gb18030') as f:
                     f.write(json.dumps(tv_vo, ensure_ascii=False)+'\n')
 
