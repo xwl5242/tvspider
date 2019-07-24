@@ -3,8 +3,8 @@ import os
 import configparser
 
 cp = configparser.ConfigParser()
-cpath = os.path.dirname(os.path.abspath(__file__))+r'/config.ini'
-cp.read(cpath, encoding='gb18030')
+cp.read(os.path.dirname(os.path.abspath(__file__))+r'/config.ini', encoding='gb18030')
+
 # user_agents
 UAS = [
             "Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Trident/5.0;",
@@ -18,19 +18,24 @@ UAS = [
             "Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 5.1; 360SE)"
         ]
 
-# 运行环境
-__RUN = str(cp.get('RUN', 'run_platform'))
-
-# mongodb配置相关
+# mongodb setting
 MD_HOST = str(cp.get('MONGODB', 'host'))
 MD_PORT = int(cp.get('MONGODB', 'port'))
 MD_DATABASE = str(cp.get('MONGODB', 'database'))
 MD_USER = str(cp.get('MONGODB', 'user'))
 MD_PWD = str(cp.get('MONGODB', 'pwd'))
 
+# mysql setting
+MS_HOST = str(cp.get('MYSQL', 'host'))
+MS_PORT = int(cp.get('MYSQL', 'port'))
+MS_DATABASE = str(cp.get('MYSQL', 'database'))
+MS_USER = str(cp.get('MYSQL', 'user'))
+MS_PWD = str(cp.get('MYSQL', 'pwd'))
+
 # tv_spider相关
 TV_SOURCE_URL = str(cp.get('TV_SPIDER', 'tv_source_url'))
+TV_SOURCE_URL_BY = str(cp.get('TV_SPIDER', 'tv_source_url_by'))
 
-if __name__ == '__main__':
-    print(MD_DATABASE)
+# db version
+DB_VERSION = str(cp.get('DB_VERSION', 'version'))
 
