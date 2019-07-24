@@ -72,6 +72,16 @@ class TVSpiderBase:
         except Exception as e:
             logging.error(repr(e))
 
+    def parse_index_by_html(self, resp):
+        if resp and resp.result() and len(resp.result()) > 0:
+            html = resp.result()[0]
+            if html and isinstance(html, str):
+                root = etree.HTML(html)
+                url = root.xpath("//span[@class='xing_vb4']/a/@href")
+                for i, u in enumerate(url):
+                    if u not in self.WEB_INDEX_URL_LIST:
+                        self.WEB_INDEX_URL_LIST.append(u)
+
     def parse_index_html(self, resp):
         """
         :param resp:
@@ -87,6 +97,20 @@ class TVSpiderBase:
                     if u not in self.WEB_INDEX_URL_LIST:
                         self.WEB_INDEX_URL_LIST.append(u)
                         self.WEB_INDEX_URL_TIME_MAP[f'{u[1:]}'] = fetch_date[i]
+
+    def parse_detail_by_html(self, resp):
+        if resp and resp.result() and len(resp.result()) > 0:
+            html = resp.result()[0]
+            if html and isinstance(html, str):
+                root = etree.HTML(html)
+                name_xpath_str = "//div[@class='vodInfo']//h2/text()"
+                urls_xpath_str = "//div[@id='play_1']//li/text()"
+                name = root.xpath(name_xpath_str)
+                urls = root.xpath(urls_xpath_str)
+                urls = [u for u in urls if u]
+                tv_vo = {'id': str(uuid.uuid4()), 'tv_name': name, 'urls': urls}
+                with open('urls_by.txt', 'a', encoding='gb18030') as f:
+                    f.write(json.dumps(tv_vo, ensure_ascii=False)+'\n')
 
     def parse_detail_html(self, resp):
         """
