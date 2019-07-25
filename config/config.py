@@ -69,6 +69,7 @@ for option in cp.options('TV_SPIDER_XPATH_3PART'):
     TV_FS_3PART_XPATH[option] = str(cp.get('TV_SPIDER_XPATH_3PART', option))
 TV_FS_XPATH_MAP = {TV_TYPE_MAIN: TV_FS_MAIN_XPATH, TV_TYPE_BACKUP: TV_FS_BACKUP_XPATH, TV_TYPE_3PART: TV_FS_3PART_XPATH}
 
+TV_EXCLUDE_TYPE = ['美女热舞写真', '街拍系列', '伦理片', '伦理', '福利片']
 
 if __name__ == '__main__':
     print(TV_FS_URL_MAP)
