@@ -35,13 +35,13 @@ class ImgSpider:
             resp = resp.result()
             with open(f'/home/img/{resp[1]}.jpg', 'wb') as f:
                 f.write(resp[0])
-            self.db.update_tv_img_save(resp[1], '1')
+            self.db.update_tv('t_tv', f" img_save=%s ", '1', resp[1])
 
     def batch_(self):
         """
         :return:
         """
-        tvs = self.db.find_tv_by_img_save('0')
+        tvs = self.db.find_one('t_tv', f" img_save=%s ", '0')
         tvs = [(tv['tv_id'], tv['tv_img']) for tv in tvs]
         batch = int(len(tvs) / 50) + 1
         for i in range(batch):

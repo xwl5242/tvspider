@@ -12,9 +12,12 @@ from db.log import logging
 
 class TVSpiderBase:
 
-    web_root = config.TV_SOURCE_URL
-    WEB_INDEX_URL_LIST = []
-    WEB_INDEX_URL_TIME_MAP = {}
+    def __init__(self, ft):
+        self.web_root = config.TV_FS_URL_MAP.get(ft)
+        self.urls_file = config.TV_FS_FILE_MAP.get(ft)
+        self.xpaths = config.TV_FS_XPATH_MAP.get(ft)
+        self.WEB_INDEX_URL_LIST = []
+        self.WEB_INDEX_URL_TIME_MAP = {}
 
     @staticmethod
     def __tv_field(field):
@@ -24,7 +27,7 @@ class TVSpiderBase:
         return str(field[0]).strip() if field and len(field) > 0 else '无'
 
     @staticmethod
-    def __deal_detail(detail):
+    def __deal_main_detail(detail):
         """
         :param detail:
         :return:
@@ -60,7 +63,8 @@ class TVSpiderBase:
         except Exception as e:
             logging.error(e)
 
-    async def fetch_html(self, url):
+    @staticmethod
+    async def fetch_html(url):
         """
         :return:
         """
@@ -72,53 +76,27 @@ class TVSpiderBase:
         except Exception as e:
             logging.error(repr(e))
 
-    def parse_index_by_html(self, resp):
-        if resp and resp.result() and len(resp.result()) > 0:
-            html = resp.result()[0]
-            if html and isinstance(html, str):
-                root = etree.HTML(html)
-                url = root.xpath("//span[@class='xing_vb4']/a/@href")
-                fetch_date = root.xpath("//span[@class ='xing_vb7']/text()")
-                for i, u in enumerate(url):
-                    if u not in self.WEB_INDEX_URL_LIST:
-                        self.WEB_INDEX_URL_LIST.append(u)
-                        self.WEB_INDEX_URL_TIME_MAP[f'{u[1:]}'] = fetch_date[i]
-
     def parse_index_html(self, resp):
         """
+        解析主链接
         :param resp:
         :return:
         """
         if resp and resp.result() and len(resp.result()) > 0:
             html = resp.result()[0]
+            ft = config.TV_FS_URL_MAP_RE.get(self.web_root)
             if html and isinstance(html, str):
                 root = etree.HTML(html)
-                url = root.xpath("//tr[@class='row']/td[position()=1]/a/@href")
-                fetch_date = root.xpath("//tr[@class='row']/td[position()=4]//font//text()")
+                url = root.xpath(config.TV_FS_XPATH_MAP.get(ft).get('tv_index_url_xpath'))
+                fetch_date = root.xpath(config.TV_FS_XPATH_MAP.get(ft).get('tv_index_fetch_date_xpath'))
                 for i, u in enumerate(url):
                     if u not in self.WEB_INDEX_URL_LIST:
                         self.WEB_INDEX_URL_LIST.append(u)
                         self.WEB_INDEX_URL_TIME_MAP[f'{u[1:]}'] = fetch_date[i]
 
-    def parse_detail_by_html(self, resp):
-        if resp and resp.result() and len(resp.result()) > 0:
-            html = resp.result()[0]
-            refer = resp.result()[1]
-            refer = str(refer).replace(config.TV_SOURCE_URL_BY, '')
-            if html and isinstance(html, str):
-                root = etree.HTML(html)
-                name_xpath_str = "//div[@class='vodInfo']//h2/text()"
-                urls_xpath_str = "//div[@id='play_1']//li/text()"
-                name = root.xpath(name_xpath_str)
-                urls = root.xpath(urls_xpath_str)
-                urls = [u for u in urls if u]
-                update_time = self.WEB_INDEX_URL_TIME_MAP.get(refer, '')
-                tv_vo = {'id': str(uuid.uuid4()), 'tv_name': name, 'urls': urls, 'update_time': update_time}
-                with open('urls_by.txt', 'a', encoding='gb18030') as f:
-                    f.write(json.dumps(tv_vo, ensure_ascii=False)+'\n')
-
     def parse_detail_html(self, resp):
         """
+        解析主链接中的视频的详情，地址
         :param resp:
         :return:
         """
@@ -126,22 +104,31 @@ class TVSpiderBase:
             html = resp.result()[0]
             refer = resp.result()[1]
             refer = str(refer).replace(self.web_root, '')
+            ft = config.TV_FS_URL_MAP_RE.get(self.web_root)
             if html and isinstance(html, str):
                 root = etree.HTML(html)
+                tv_vo = dict()
                 tv_id = str(uuid.uuid4())
-                tv_img = TVSpiderBase.__tv_field(root.xpath("//div[@class='img']/img/@src"))
-                detail_xpath_str = "//table[@style='text-align:left']/tr[1]/td[2]/table//tr//td//text()"
-                urls_xpath_str = "//table[@style='text-align:left']/tr[3]/td/table//tr[position()<(last())]//text()"
-                detail = "@".join(root.xpath(detail_xpath_str)).strip()
-                tv_vo = TVSpiderBase.__deal_detail(detail)
+                if ft == config.TV_TYPE_MAIN:
+                    img_xpath_str = config.TV_FS_XPATH_MAP.get(ft).get('tv_detail_img_xpath')
+                    tv_img = TVSpiderBase.__tv_field(root.xpath(img_xpath_str))
+                    detail_xpath_str = config.TV_FS_XPATH_MAP.get(ft).get('tv_detail_intro_xpath')
+                    detail = "@".join(root.xpath(detail_xpath_str)).strip()
+                    tv_vo = TVSpiderBase.__deal_main_detail(detail)
+                    tv_vo['tv_img'] = tv_img
+                else:
+                    name_xpath_str = config.TV_FS_XPATH_MAP.get(ft).get('tv_detail_urls_xpath')
+                    name = root.xpath(name_xpath_str)
+                    name = ''.join(name).replace('影片名称: ', '')
+                    tv_vo['tv_name'] = name
+                urls_xpath_str = config.TV_FS_XPATH_MAP.get(ft).get('tv_detail_urls_xpath')
                 update_time = self.WEB_INDEX_URL_TIME_MAP.get(refer, '')
-                tv_vo['tv_id'] = tv_id
-                tv_vo['tv_img'] = tv_img
-                tv_vo['update_time'] = update_time
                 urls = root.xpath(urls_xpath_str)
                 urls = [u for u in urls if u]
+                tv_vo['tv_id'] = tv_id
+                tv_vo['update_time'] = update_time
                 tv_vo['urls'] = urls
-                with open('urls.txt', 'a', encoding='gb18030') as f:
+                with open(config.TV_FS_FILE_MAP.get(ft), 'a', encoding='gb18030') as f:
                     f.write(json.dumps(tv_vo, ensure_ascii=False)+'\n')
 
     @staticmethod
