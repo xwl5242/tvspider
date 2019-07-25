@@ -107,7 +107,7 @@ class TVSpiderBase:
             ft = config.TV_FS_URL_MAP_RE.get(self.web_root)
             if html and isinstance(html, str):
                 root = etree.HTML(html)
-                tv_vo = dict()
+                tv_vo = {}
                 tv_id = str(uuid.uuid4())
                 if ft == config.TV_TYPE_MAIN:
                     img_xpath_str = config.TV_FS_XPATH_MAP.get(ft).get('tv_detail_img_xpath')
@@ -117,7 +117,7 @@ class TVSpiderBase:
                     tv_vo = TVSpiderBase.__deal_main_detail(detail)
                     tv_vo['tv_img'] = tv_img
                 else:
-                    name_xpath_str = config.TV_FS_XPATH_MAP.get(ft).get('tv_detail_urls_xpath')
+                    name_xpath_str = config.TV_FS_XPATH_MAP.get(ft).get('tv_detail_name_xpath')
                     name = root.xpath(name_xpath_str)
                     name = ''.join(name).replace('影片名称: ', '')
                     tv_vo['tv_name'] = name
