@@ -43,6 +43,13 @@ TV_FS_3PART_URL = str(cp.get('TV_SPIDER_URL', 'tv_fs_3part'))
 TV_FS_URL_MAP = {TV_TYPE_MAIN: TV_FS_MAIN_URL, TV_TYPE_BACKUP: TV_FS_BACKUP_URL, TV_TYPE_3PART: TV_FS_3PART_URL}
 TV_FS_URL_MAP_RE = {TV_FS_MAIN_URL: TV_TYPE_MAIN, TV_FS_BACKUP_URL: TV_TYPE_BACKUP, TV_FS_3PART_URL: TV_TYPE_3PART}
 
+# tv_spider_index_url_file 相关
+TV_FS_INDEX_MAIN_FILE = str(cp.get('TV_SPIDER_INDEX_FILE', 'tv_fs_main_file'))
+TV_FS_INDEX_BACKUP_FILE = str(cp.get('TV_SPIDER_INDEX_FILE', 'tv_fs_backup_file'))
+TV_FS_INDEX_3PART_FILE = str(cp.get('TV_SPIDER_INDEX_FILE', 'tv_fs_3part_file'))
+TV_FS_INDEX_URL_FILE_MAP = {TV_TYPE_MAIN: TV_FS_INDEX_MAIN_FILE,
+                            TV_TYPE_BACKUP: TV_FS_INDEX_BACKUP_FILE, TV_TYPE_3PART: TV_FS_INDEX_3PART_FILE}
+
 # tv_spider_url_file相关
 TV_FS_MAIN_FILE = str(cp.get('TV_SPIDER_URL_FILE', 'tv_fs_main_file'))
 TV_FS_BACKUP_FILE = str(cp.get('TV_SPIDER_URL_FILE', 'tv_fs_backup_file'))
