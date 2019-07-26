@@ -13,6 +13,7 @@ from db.log import logging
 class TVSpiderBase:
 
     def __init__(self, ft):
+        self.ft = ft
         self.web_root = config.TV_FS_URL_MAP.get(ft)
         self.urls_file = config.TV_FS_FILE_MAP.get(ft)
         self.xpaths = config.TV_FS_XPATH_MAP.get(ft)
@@ -27,19 +28,26 @@ class TVSpiderBase:
         return str(field[0]).strip() if field and len(field) > 0 else '无'
 
     @staticmethod
-    def __deal_main_detail(detail):
+    def __deal_main_detail(ft, detail):
         """
         :param detail:
         :return:
         """
         try:
             do = {}
-            details = detail.split('@')
-            tv_intro = details[-1]
-            t_detail = '@'.join(details[:-1]) + '@'
-            tv_detail_list = [('影片名称：', 'tv_name'), ('影片演员：', 'tv_actors'), ('影片导演：', 'tv_director'),
-                              ('影片类型：', 'tv_type'), ('影片地区：', 'tv_area'), ('影片语言：', 'tv_lang'),
-                              ('上映日期：', 'tv_year'), ('影片备注：', 'tv_remark')]
+            if ft == config.TV_TYPE_MAIN:
+                details = detail.split('@')
+                tv_intro = details[-1]
+                do['tv_intro'] = tv_intro
+                t_detail = '@'.join(details[:-1]) + '@'
+                tv_detail_list = [('影片名称：', 'tv_name'), ('影片演员：', 'tv_actors'), ('影片导演：', 'tv_director'),
+                                  ('影片类型：', 'tv_type'), ('影片地区：', 'tv_area'), ('影片语言：', 'tv_lang'),
+                                  ('上映日期：', 'tv_year'), ('影片备注：', 'tv_remark')]
+            else:
+                t_detail = detail
+                tv_detail_list = [('影片名称: ', 'tv_name'), ('影片主演: ', 'tv_actors'), ('影片导演: ', 'tv_director'),
+                                  ('栏目分类: ', 'tv_type'), ('影片地区: ', 'tv_area'), ('语言分类:', 'tv_lang'),
+                                  ('上映年份: ', 'tv_year'), ('影片备注: ', 'tv_remark')]
             t_d_t = [x[0] for x in tv_detail_list]
             for td in tv_detail_list:
                 do[td[1]] = ''
@@ -58,7 +66,6 @@ class TVSpiderBase:
                     except ValueError as e:
                         do[td[1]] = ''
                         continue
-            do['tv_intro'] = tv_intro
             return do
         except Exception as e:
             logging.error(e)
@@ -95,8 +102,8 @@ class TVSpiderBase:
                         if u not in self.WEB_INDEX_URL_LIST:
                             self.WEB_INDEX_URL_LIST.append(u)
                             self.WEB_INDEX_URL_TIME_MAP[f'{u[1:]}'] = fetch_date[i]
-                            with open(config.TV_FS_INDEX_URL_FILE_MAP.get(ft), 'a', encoding='gb18030') as f:
-                                f.write(json.dumps({'iu': u[1:], 'fd': fetch_date[i]}, ensure_ascii=False) + '\n')
+                            # with open(config.TV_FS_INDEX_URL_FILE_MAP.get(ft), 'a', encoding='gb18030') as f:
+                            #     f.write(json.dumps({'iu': u[1:], 'fd': fetch_date[i]}, ensure_ascii=False) + '\n')
 
     def parse_detail_html(self, resp):
         """
@@ -111,18 +118,14 @@ class TVSpiderBase:
             ft = config.TV_FS_URL_MAP_RE.get(self.web_root)
             if html and isinstance(html, str):
                 root = etree.HTML(html)
-                tv_vo = {}
                 tv_id = str(uuid.uuid4())
-                if ft == config.TV_TYPE_MAIN:
-                    detail_xpath_str = config.TV_FS_XPATH_MAP.get(ft).get('tv_detail_intro_xpath')
-                    detail = "@".join(root.xpath(detail_xpath_str)).strip()
-                    tv_vo = TVSpiderBase.__deal_main_detail(detail)
-                else:
-                    intro_xpath_str = config.TV_FS_XPATH_MAP.get(ft).get('tv_detail_intro_xpath')
+                detail_xpath_str = config.TV_FS_XPATH_MAP.get(ft).get('tv_detail_intro_xpath')
+                detail = "@".join(root.xpath(detail_xpath_str)).strip()
+                tv_vo = TVSpiderBase.__deal_main_detail(self.ft, detail)
+                if ft == config.TV_TYPE_3PART:
+                    intro_xpath_str = config.TV_FS_XPATH_MAP.get(ft).get('tv_intro_xpath')
                     intro = ''.join(root.xpath(intro_xpath_str))
                     tv_vo['intro'] = intro
-                    detail_xpath_str = config.TV_FS_XPATH_MAP.get(ft).get('tv_detail_xpath')
-                    detail = "@".join(root.xpath(detail_xpath_str)).strip()
                 img_xpath_str = config.TV_FS_XPATH_MAP.get(ft).get('tv_detail_img_xpath')
                 tv_img = TVSpiderBase.__tv_field(root.xpath(img_xpath_str))
                 urls_xpath_str = config.TV_FS_XPATH_MAP.get(ft).get('tv_detail_urls_xpath')
