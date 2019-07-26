@@ -57,7 +57,7 @@ class DB:
     def find_one(cursor, table_name, where_str, args):
         assert isinstance(where_str, str), 'where need str type'
         sql = f"select * from {table_name} where 1=1 and {where_str}"
-        cursor.execute(sql, tuple(args))
+        cursor.execute(sql, args)
         tv = cursor.fetchall()
         return tv[0] if tv and len(tv) > 0 else None
 
