@@ -87,12 +87,16 @@ class TVSpiderBase:
             ft = config.TV_FS_URL_MAP_RE.get(self.web_root)
             if html and isinstance(html, str):
                 root = etree.HTML(html)
+                tv_type = root.xpath(config.TV_FS_XPATH_MAP.get(ft).get('tv_index_type_xpath'))
                 url = root.xpath(config.TV_FS_XPATH_MAP.get(ft).get('tv_index_url_xpath'))
                 fetch_date = root.xpath(config.TV_FS_XPATH_MAP.get(ft).get('tv_index_fetch_date_xpath'))
                 for i, u in enumerate(url):
-                    if u not in self.WEB_INDEX_URL_LIST:
-                        self.WEB_INDEX_URL_LIST.append(u)
-                        self.WEB_INDEX_URL_TIME_MAP[f'{u[1:]}'] = fetch_date[i]
+                    if tv_type[i] not in config.TV_EXCLUDE_TYPE:
+                        if u not in self.WEB_INDEX_URL_LIST:
+                            self.WEB_INDEX_URL_LIST.append(u)
+                            self.WEB_INDEX_URL_TIME_MAP[f'{u[1:]}'] = fetch_date[i]
+                            # with open(config.TV_FS_INDEX_URL_FILE_MAP.get(ft), 'a', encoding='gb18030') as f:
+                            #     f.write(json.dumps({'iu': u[1:], 'fd': fetch_date[i]}, ensure_ascii=False) + '\n')
 
     def parse_detail_html(self, resp):
         """
@@ -152,7 +156,7 @@ class TVSpiderBase:
         """
         :return:
         """
-        batch = int(len(urls) / 100) + 1
+        batch = int(len(urls) / 500) + 1
         for i in range(batch):
-            end = len(urls) if i == (batch - 1) else (i + 1) * 100
-            TVSpiderBase.save_(urls[i * 100:end], fetch_func, parse_func)
+            end = len(urls) if i == (batch - 1) else (i + 1) * 500
+            TVSpiderBase.save_(urls[i * 500:end], fetch_func, parse_func)
