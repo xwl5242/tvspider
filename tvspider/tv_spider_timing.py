@@ -47,16 +47,17 @@ class TVSpiderTiming(TB):
         date_str_2 = time.mktime(time.strptime(date_str_2, '%Y-%m-%d %H:%M:%S'))
         return int(date_str_1) - int(date_str_2)
 
-    def __timing_url(self):
+    def __timing_url(self, web_root):
         """
         :return:
         """
         logging.info(f'fetch tv {self.ft} index url timing start...')
-        r = requests.get(self.web_root, headers={'User-Agent': random.choice(config.UAS)})
+        r = requests.get(web_root, headers={'User-Agent': random.choice(config.UAS)})
         index_url = etree.HTML(r.text).xpath(config.TV_FS_XPATH_MAP.get(self.ft).get('tv_index_url_xpath'))
         times = etree.HTML(r.text).xpath(config.TV_FS_XPATH_MAP.get(self.ft).get('tv_index_fetch_date_xpath'))
         i = 0
         for n, ti in enumerate(times):
+            ti = str(ti).strip()
             if self.__date_str_compare(ti, self.timing) > 0:
                 self.CUR_2_LAST_URLS.append(index_url[n])
                 self.WEB_INDEX_URL_TIME_MAP[index_url[n][1:]] = ti
