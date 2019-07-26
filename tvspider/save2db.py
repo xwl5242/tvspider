@@ -28,6 +28,10 @@ class CSV2MD:
                         v = tv_json.get(k)
                         v = str(v).replace(' ', '').replace('\t', '')
                         v = v[:2000]+'...' if len(v) > 2000 else v
+                    elif k == 'tv_name':
+                        v = tv_json.get(k)
+                        v = str(v).replace(' ', '').replace('~', '')\
+                            .replace('~', '').replace('[T]', '').replace('?', '').replace('？', '').replace('·', '')
                     else:
                         v = tv_json.get(k)
                     tv_o[k] = v
@@ -54,13 +58,15 @@ class CSV2MD:
     def insert_tv(self, tv):
         try:
             tv_json = dict(json.loads(tv))
-            urls = list(tv_json.get('urls', []))
-            urls = [u for u in urls if u != ' ' and u != '\t']
-            to = CSV2MD.__build_tv(tv_json)
-            uo = CSV2MD.__build_urls(tv_json.get('tv_id'), urls)
-            self.db.insert(self.tv_table_name, to)
-            if uo and len(uo) > 0:
-                self.db.insert_many(self.tv_urls_table_name, uo)
+            tv_name = tv_json['tv_name']
+            if tv_name:
+                urls = list(tv_json.get('urls', []))
+                urls = [u for u in urls if u != ' ' and u != '\t']
+                to = CSV2MD.__build_tv(tv_json)
+                uo = CSV2MD.__build_urls(tv_json.get('tv_id'), urls)
+                self.db.insert(self.tv_table_name, to)
+                if uo and len(uo) > 0:
+                    self.db.insert_many(self.tv_urls_table_name, uo)
         except Exception as e:
             with open('error.txt', 'a', encoding='utf-8') as f:
                 f.write(tv)
@@ -91,22 +97,23 @@ class CSV2MD:
                 for tv in tvs:
                     tv = dict(json.loads(tv))
                     tv_name = tv.get('tv_name')
-                    m_tv = self.db.find_one(self.tv_table_name, f" tv_name=%s ", tv_name)
-                    if m_tv:
-                        # 已存在
-                        tv_id = m_tv.get('tv_id')
-                        self.db.update_tv(self.tv_table_name, f" update_time=%s ", tv.get('update_time'), tv_id)
-                    else:
-                        # 不存在
-                        tv_id = tv.get('tv_id')
-                        self.db.insert(self.tv_table_name, CSV2MD.__build_tv(tv))
-                    self.db.delete(self.tv_urls_table_name, tv_id)
-                    urls = list(tv.get('urls'))
-                    urls = [u for u in urls if u != ' ' and u != '\t']
-                    u_list = []
-                    for u in urls:
-                        u_list.append({'id': str(uuid.uuid4()), 'tv_id': tv_id, 'tv_url': str(u).replace(' ', '')})
-                    self.db.insert_many(self.tv_urls_table_name, u_list)
+                    if tv_name:
+                        m_tv = self.db.find_one(self.tv_table_name, f" tv_name=%s ", tv_name)
+                        if m_tv:
+                            # 已存在
+                            tv_id = m_tv.get('tv_id')
+                            self.db.update_tv(self.tv_table_name, f" update_time=%s ", tv.get('update_time'), tv_id)
+                        else:
+                            # 不存在
+                            tv_id = tv.get('tv_id')
+                            self.db.insert(self.tv_table_name, CSV2MD.__build_tv(tv))
+                        self.db.delete(self.tv_urls_table_name, tv_id)
+                        urls = list(tv.get('urls'))
+                        urls = [u for u in urls if u != ' ' and u != '\t']
+                        u_list = []
+                        for u in urls:
+                            u_list.append({'id': str(uuid.uuid4()), 'tv_id': tv_id, 'tv_url': str(u).replace(' ', '')})
+                        self.db.insert_many(self.tv_urls_table_name, u_list)
         except Exception as e:
             logging.error(e)
         logging.info(f'end save timing {self.ft} data to mysql db')
