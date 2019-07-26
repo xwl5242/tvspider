@@ -95,8 +95,8 @@ class TVSpiderBase:
                         if u not in self.WEB_INDEX_URL_LIST:
                             self.WEB_INDEX_URL_LIST.append(u)
                             self.WEB_INDEX_URL_TIME_MAP[f'{u[1:]}'] = fetch_date[i]
-                            # with open(config.TV_FS_INDEX_URL_FILE_MAP.get(ft), 'a', encoding='gb18030') as f:
-                            #     f.write(json.dumps({'iu': u[1:], 'fd': fetch_date[i]}, ensure_ascii=False) + '\n')
+                            with open(config.TV_FS_INDEX_URL_FILE_MAP.get(ft), 'a', encoding='gb18030') as f:
+                                f.write(json.dumps({'iu': u[1:], 'fd': fetch_date[i]}, ensure_ascii=False) + '\n')
 
     def parse_detail_html(self, resp):
         """
@@ -114,22 +114,23 @@ class TVSpiderBase:
                 tv_vo = {}
                 tv_id = str(uuid.uuid4())
                 if ft == config.TV_TYPE_MAIN:
-                    img_xpath_str = config.TV_FS_XPATH_MAP.get(ft).get('tv_detail_img_xpath')
-                    tv_img = TVSpiderBase.__tv_field(root.xpath(img_xpath_str))
                     detail_xpath_str = config.TV_FS_XPATH_MAP.get(ft).get('tv_detail_intro_xpath')
                     detail = "@".join(root.xpath(detail_xpath_str)).strip()
                     tv_vo = TVSpiderBase.__deal_main_detail(detail)
-                    tv_vo['tv_img'] = tv_img
                 else:
-                    name_xpath_str = config.TV_FS_XPATH_MAP.get(ft).get('tv_detail_name_xpath')
-                    name = root.xpath(name_xpath_str)
-                    name = ''.join(name).replace('影片名称: ', '')
-                    tv_vo['tv_name'] = name
+                    intro_xpath_str = config.TV_FS_XPATH_MAP.get(ft).get('tv_detail_intro_xpath')
+                    intro = ''.join(root.xpath(intro_xpath_str))
+                    tv_vo['intro'] = intro
+                    detail_xpath_str = config.TV_FS_XPATH_MAP.get(ft).get('tv_detail_xpath')
+                    detail = "@".join(root.xpath(detail_xpath_str)).strip()
+                img_xpath_str = config.TV_FS_XPATH_MAP.get(ft).get('tv_detail_img_xpath')
+                tv_img = TVSpiderBase.__tv_field(root.xpath(img_xpath_str))
                 urls_xpath_str = config.TV_FS_XPATH_MAP.get(ft).get('tv_detail_urls_xpath')
                 update_time = self.WEB_INDEX_URL_TIME_MAP.get(refer, '')
                 urls = root.xpath(urls_xpath_str)
                 urls = [u for u in urls if u]
                 tv_vo['tv_id'] = tv_id
+                tv_vo['tv_img'] = tv_img
                 tv_vo['update_time'] = update_time
                 tv_vo['urls'] = urls
                 with open(config.TV_FS_FILE_MAP.get(ft), 'a', encoding='gb18030') as f:
@@ -160,3 +161,5 @@ class TVSpiderBase:
         for i in range(batch):
             end = len(urls) if i == (batch - 1) else (i + 1) * 500
             TVSpiderBase.save_(urls[i * 500:end], fetch_func, parse_func)
+
+

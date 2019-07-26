@@ -14,10 +14,8 @@ class CSV2MD:
         self.ft = ft
         self.urls_file = config.TV_FS_FILE_MAP.get(ft)
         self.db = DB()
-        self.tv_table_name = {config.TV_TYPE_MAIN: 't_tv',
-                              config.TV_TYPE_BACKUP: 't_tv_backup', config.TV_TYPE_3PART: 't_tv_3part'}.get(ft)
-        self.tv_urls_table_name = {config.TV_TYPE_MAIN: 't_tv_urls',
-                                   config.TV_TYPE_BACKUP: 't_tv_urls_backup', config.TV_TYPE_3PART: 't_tv_urls_3part'}.get(ft)
+        self.tv_table_name = {config.TV_TYPE_MAIN: 't_tv', config.TV_TYPE_3PART: 't_tv_3part'}.get(ft)
+        self.tv_urls_table_name = {config.TV_TYPE_MAIN: 't_tv_urls', config.TV_TYPE_3PART: 't_tv_urls_3part'}.get(ft)
 
     @staticmethod
     def __build_tv(tv_json):
@@ -49,7 +47,7 @@ class CSV2MD:
 
     def insert_tv_other(self, tv):
         tv_json = dict(json.loads(tv))
-        tv_id = tv_json.get('id')
+        tv_id = tv_json.get('tv_id')
         tv = {'id': tv_id, 'tv_name': tv_json.get('tv_name'), 'update_time': tv_json.get('update_time')}
         self.db.insert(self.tv_table_name, tv)
         u_list = []
@@ -83,7 +81,7 @@ class CSV2MD:
         logging.info(f'read init tv_url data record:{len(tvs)}')
         logging.info(f'start save init {self.ft} data to mysql db')
         try:
-            with ThreadPoolExecutor() as e:
+            with ThreadPoolExecutor(max_workers=20) as e:
                 e.map(self.insert_tv if self.ft == config.TV_TYPE_MAIN else self.insert_tv_other, tvs)
         except Exception as e:
             logging.error(e)

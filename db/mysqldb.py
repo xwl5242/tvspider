@@ -36,15 +36,21 @@ class DB:
         assert isinstance(tv, dict), 'insert param need dict type'
         tv = dict(tv)
         columns = ','.join(tv.keys())
-        columns_s = ['%s,' for i in tv.keys()]
-        sql = f"insert into {table_name}({columns} values ({columns_s})"
+        columns_s = ''.join(['%s,' for i in tv.keys()])[:-1]
+        sql = f"insert into {table_name}({columns}) values ({columns_s})"
         cursor.execute(sql, tuple([tv.get(k) for k in tv.keys()]))
 
     @staticmethod
     @app_db
     def insert_many(cursor, table_name, tvs):
+        tv = list(tvs)[0]
+        tv_list = []
         for t in tvs:
-            DB.insert(cursor, table_name, t)
+            tv_list.append(tuple([t.get(k) for k in t.keys()]))
+        columns = ','.join(tv.keys())
+        columns_s = ''.join(['%s,' for i in tv.keys()])[:-1]
+        sql = f"insert into {table_name}({columns}) values ({columns_s})"
+        cursor.executemany(sql, tv_list)
 
     @staticmethod
     @app_db

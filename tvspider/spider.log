@@ -1,1 +1,68 @@
-
+Fri, 26 Jul 2019 13:12:06 selector_events.py[line:53] DEBUG Using selector: SelectSelector
+Fri, 26 Jul 2019 13:13:11 selector_events.py[line:53] DEBUG Using selector: SelectSelector
+Fri, 26 Jul 2019 13:13:11 base_events.py[line:1608] ERROR Exception in callback TVSpiderBase.parse_detail_html(<Task finishe...46979.html'))>)
+handle: <Handle TVSpiderBase.parse_detail_html(<Task finishe...46979.html'))>)>
+Traceback (most recent call last):
+  File "C:\python\lib\asyncio\events.py", line 88, in _run
+    self._context.run(self._callback, *self._args)
+  File "E:/gitRepository/tvspider/tvspider/tv_spider_base.py", line 123, in parse_detail_html
+    intro = root.xpath(intro_xpath_str).strip()
+AttributeError: 'list' object has no attribute 'strip'
+Fri, 26 Jul 2019 13:13:24 selector_events.py[line:53] DEBUG Using selector: SelectSelector
+Fri, 26 Jul 2019 13:13:24 base_events.py[line:1608] ERROR Exception in callback TVSpiderBase.parse_detail_html(<Task finishe...46979.html'))>)
+handle: <Handle TVSpiderBase.parse_detail_html(<Task finishe...46979.html'))>)>
+Traceback (most recent call last):
+  File "C:\python\lib\asyncio\events.py", line 88, in _run
+    self._context.run(self._callback, *self._args)
+  File "E:/gitRepository/tvspider/tvspider/tv_spider_base.py", line 122, in parse_detail_html
+    intro = root.xpath(intro_xpath_str).strip()
+AttributeError: 'list' object has no attribute 'strip'
+Fri, 26 Jul 2019 13:13:39 selector_events.py[line:53] DEBUG Using selector: SelectSelector
+Fri, 26 Jul 2019 13:13:39 base_events.py[line:1608] ERROR Exception in callback TVSpiderBase.parse_detail_html(<Task finishe...46979.html'))>)
+handle: <Handle TVSpiderBase.parse_detail_html(<Task finishe...46979.html'))>)>
+Traceback (most recent call last):
+  File "C:\python\lib\asyncio\events.py", line 88, in _run
+    self._context.run(self._callback, *self._args)
+  File "E:/gitRepository/tvspider/tvspider/tv_spider_base.py", line 122, in parse_detail_html
+    intro = root.xpath(intro_xpath_str).strip()
+AttributeError: 'list' object has no attribute 'strip'
+Fri, 26 Jul 2019 13:14:07 selector_events.py[line:53] DEBUG Using selector: SelectSelector
+Fri, 26 Jul 2019 13:14:07 base_events.py[line:1608] ERROR Exception in callback TVSpiderBase.parse_detail_html(<Task finishe...46979.html'))>)
+handle: <Handle TVSpiderBase.parse_detail_html(<Task finishe...46979.html'))>)>
+Traceback (most recent call last):
+  File "C:\python\lib\asyncio\events.py", line 88, in _run
+    self._context.run(self._callback, *self._args)
+  File "E:/gitRepository/tvspider/tvspider/tv_spider_base.py", line 123, in parse_detail_html
+    intro = root.xpath(intro_xpath_str).strip()
+AttributeError: 'list' object has no attribute 'strip'
+Fri, 26 Jul 2019 13:14:26 selector_events.py[line:53] DEBUG Using selector: SelectSelector
+Fri, 26 Jul 2019 13:14:26 base_events.py[line:1608] ERROR Exception in callback TVSpiderBase.parse_detail_html(<Task finishe...46979.html'))>)
+handle: <Handle TVSpiderBase.parse_detail_html(<Task finishe...46979.html'))>)>
+Traceback (most recent call last):
+  File "C:\python\lib\asyncio\events.py", line 88, in _run
+    self._context.run(self._callback, *self._args)
+  File "E:/gitRepository/tvspider/tvspider/tv_spider_base.py", line 124, in parse_detail_html
+    intro = root.xpath(intro_xpath_str).strip()
+AttributeError: 'list' object has no attribute 'strip'
+Fri, 26 Jul 2019 13:15:11 selector_events.py[line:53] DEBUG Using selector: SelectSelector
+Fri, 26 Jul 2019 13:15:11 base_events.py[line:1608] ERROR Exception in callback TVSpiderBase.parse_detail_html(<Task finishe...46979.html'))>)
+handle: <Handle TVSpiderBase.parse_detail_html(<Task finishe...46979.html'))>)>
+Traceback (most recent call last):
+  File "C:\python\lib\asyncio\events.py", line 88, in _run
+    self._context.run(self._callback, *self._args)
+  File "E:/gitRepository/tvspider/tvspider/tv_spider_base.py", line 123, in parse_detail_html
+    intro = root.xpath(intro_xpath_str).strip()
+AttributeError: 'list' object has no attribute 'strip'
+Fri, 26 Jul 2019 13:16:13 selector_events.py[line:53] DEBUG Using selector: SelectSelector
+Fri, 26 Jul 2019 13:16:13 base_events.py[line:1608] ERROR Exception in callback TVSpiderBase.parse_detail_html(<Task finishe...46979.html'))>)
+handle: <Handle TVSpiderBase.parse_detail_html(<Task finishe...46979.html'))>)>
+Traceback (most recent call last):
+  File "C:\python\lib\asyncio\events.py", line 88, in _run
+    self._context.run(self._callback, *self._args)
+  File "E:/gitRepository/tvspider/tvspider/tv_spider_base.py", line 123, in parse_detail_html
+    intro = root.xpath(intro_xpath_str).strip()
+AttributeError: 'list' object has no attribute 'strip'
+Fri, 26 Jul 2019 13:17:21 selector_events.py[line:53] DEBUG Using selector: SelectSelector
+Fri, 26 Jul 2019 13:17:42 selector_events.py[line:53] DEBUG Using selector: SelectSelector
+Fri, 26 Jul 2019 13:18:11 selector_events.py[line:53] DEBUG Using selector: SelectSelector
+Fri, 26 Jul 2019 13:21:42 selector_events.py[line:53] DEBUG Using selector: SelectSelector
