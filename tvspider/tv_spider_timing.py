@@ -97,7 +97,6 @@ def main(ft):
 
 if __name__ == '__main__':
     main(config.TV_TYPE_MAIN)
-    main(config.TV_TYPE_BACKUP)
     main(config.TV_TYPE_3PART)
 
 

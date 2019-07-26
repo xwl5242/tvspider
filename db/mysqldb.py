@@ -12,9 +12,9 @@ POOL = PooledDB(pymysql, 5, host=config.MS_HOST, user=config.MS_USER,
 # database decorator, auto connect and auto close db, cursor
 def app_db(func):
     def wrapper(*args, **kwargs):
+        conn = POOL.connection()
+        cursor = conn.cursor()
         try:
-            conn = POOL.connection()
-            cursor = conn.cursor()
             return func(cursor, *args, **kwargs)
         except Exception as e:
             import traceback

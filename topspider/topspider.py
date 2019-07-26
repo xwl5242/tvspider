@@ -54,7 +54,7 @@ class TopSpider:
         try:
             url = self.tv_type_url_map.get(tv_type, '')
             if url and len(url) > 0:
-                self.db.delete_by_tv_type('t_tv_banner_top', tv_type)
+                self.db.delete_by_tv_type('t_b_t', tv_type)
                 for u in url:
                     r = requests.get(u, headers={'User-Agent': random.choice(config.UAS)})
                     self.parse_top(r.content.decode('utf-8'))
@@ -66,7 +66,7 @@ class TopSpider:
                                 tv_banner['tv_type'] = tv_type
                                 tv_banner['tv_name'] = top[0]
                                 tv_banner['tv_img'] = top[1]
-                                self.db.insert('t_tv_banner_top', tv_banner)
+                                self.db.insert('t_b_t', tv_banner)
         except Exception as e:
             print(repr(e))
 

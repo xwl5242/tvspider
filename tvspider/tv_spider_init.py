@@ -41,13 +41,13 @@ class TVInitSpider(TB):
 
 
 def main(ft, s, e):
-    tv_init = TVInitSpider(ft, s, e)
-    tv_init.detail()
+    # tv_init = TVInitSpider(ft, s, e)
+    # tv_init.detail()
     # time.sleep(1)
-    # cm = CSV2MD(ft)
-    # cm.save_init()
+    cm = CSV2MD(ft)
+    cm.save_init()
 
 
 if __name__ == '__main__':
-    # main(config.TV_TYPE_MAIN, 2, 658)
-    main(config.TV_TYPE_3PART, 2, 850)
+    # main(config.TV_TYPE_MAIN, 2, 659)
+    main(config.TV_TYPE_3PART, 2, 851)

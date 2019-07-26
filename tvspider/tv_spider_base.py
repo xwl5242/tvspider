@@ -124,8 +124,8 @@ class TVSpiderBase:
                 tv_vo = TVSpiderBase.__deal_main_detail(self.ft, detail)
                 if ft == config.TV_TYPE_3PART:
                     intro_xpath_str = config.TV_FS_XPATH_MAP.get(ft).get('tv_intro_xpath')
-                    intro = ''.join(root.xpath(intro_xpath_str))
-                    tv_vo['intro'] = intro
+                    intro = ''.join(root.xpath(intro_xpath_str)).replace(' ', '')
+                    tv_vo['tv_intro'] = intro
                 img_xpath_str = config.TV_FS_XPATH_MAP.get(ft).get('tv_detail_img_xpath')
                 tv_img = TVSpiderBase.__tv_field(root.xpath(img_xpath_str))
                 urls_xpath_str = config.TV_FS_XPATH_MAP.get(ft).get('tv_detail_urls_xpath')
@@ -160,9 +160,9 @@ class TVSpiderBase:
         """
         :return:
         """
-        batch = int(len(urls) / 500) + 1
+        batch = int(len(urls) / 100) + 1
         for i in range(batch):
-            end = len(urls) if i == (batch - 1) else (i + 1) * 500
-            TVSpiderBase.save_(urls[i * 500:end], fetch_func, parse_func)
+            end = len(urls) if i == (batch - 1) else (i + 1) * 100
+            TVSpiderBase.save_(urls[i * 100:end], fetch_func, parse_func)
 
 

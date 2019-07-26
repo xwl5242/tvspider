@@ -24,7 +24,13 @@ class CSV2MD:
             tv_json = dict(tv_json)
             for k in tv_json.keys():
                 if k != 'urls':
-                    tv_o[k] = tv_json.get(k)
+                    if k == 'tv_intro':
+                        v = tv_json.get(k)
+                        v = str(v).replace(' ', '').replace('\t', '')
+                        v = v[:2000]+'...' if len(v) > 2000 else v
+                    else:
+                        v = tv_json.get(k)
+                    tv_o[k] = v
             tv_o['img_save'] = '0'
             return tv_o
         except Exception as e:
@@ -45,21 +51,7 @@ class CSV2MD:
         except Exception as e:
             logging.error(repr(e))
 
-    def insert_tv_other(self, tv):
-        tv_json = dict(json.loads(tv))
-        tv_id = tv_json.get('tv_id')
-        tv = {'id': tv_id, 'tv_name': tv_json.get('tv_name'), 'update_time': tv_json.get('update_time')}
-        self.db.insert(self.tv_table_name, tv)
-        u_list = []
-        for u in list(tv_json.get('urls')):
-            u_list.append({'id': str(uuid.uuid4()), 'tv_id': tv_id, 'tv_url': u})
-        self.db.insert_many(self.tv_urls_table_name, u_list)
-
     def insert_tv(self, tv):
-        """
-        :param tv:
-        :return:
-        """
         try:
             tv_json = dict(json.loads(tv))
             urls = list(tv_json.get('urls', []))
@@ -70,6 +62,8 @@ class CSV2MD:
             if uo and len(uo) > 0:
                 self.db.insert_many(self.tv_urls_table_name, uo)
         except Exception as e:
+            with open('error.txt', 'a', encoding='utf-8') as f:
+                f.write(tv)
             logging.error(e)
 
     def save_init(self):
@@ -81,8 +75,8 @@ class CSV2MD:
         logging.info(f'read init tv_url data record:{len(tvs)}')
         logging.info(f'start save init {self.ft} data to mysql db')
         try:
-            with ThreadPoolExecutor(max_workers=20) as e:
-                e.map(self.insert_tv if self.ft == config.TV_TYPE_MAIN else self.insert_tv_other, tvs)
+            with ThreadPoolExecutor(max_workers=25) as e:
+                e.map(self.insert_tv, tvs)
         except Exception as e:
             logging.error(e)
         logging.info(f'end save init {self.ft} data to mysql db')
@@ -105,7 +99,7 @@ class CSV2MD:
                     else:
                         # 不存在
                         tv_id = tv.get('tv_id')
-                        self.db.insert(self.tv_table_name, CSV2MD.__build_tv(tv) if self.ft == config.TV_TYPE_MAIN else tv)
+                        self.db.insert(self.tv_table_name, CSV2MD.__build_tv(tv))
                     self.db.delete(self.tv_urls_table_name, tv_id)
                     urls = list(tv.get('urls'))
                     urls = [u for u in urls if u != ' ' and u != '\t']
