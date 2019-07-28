@@ -33,15 +33,15 @@ class ImgSpider:
     def parse_content(self, resp):
         if resp and resp.result() and len(resp.result()) == 2:
             resp = resp.result()
-            with open(f'/home/img/{resp[1]}.jpg', 'wb') as f:
+            with open(f'/home/imgs/{resp[1]}.jpg', 'wb') as f:
                 f.write(resp[0])
-            self.db.update_tv('t_tv', f" img_save=%s ", '1', resp[1])
+            self.db.update_tv('t_tv_all', f" img_save=%s ", '1', resp[1])
 
     def batch_(self):
         """
         :return:
         """
-        tvs = self.db.find_one('t_tv', f" img_save=%s ", '0')
+        tvs = self.db.find_one('t_tv_all', f" img_save=%s ", '0')
         tvs = [(tv['tv_id'], tv['tv_img']) for tv in tvs]
         batch = int(len(tvs) / 50) + 1
         for i in range(batch):
