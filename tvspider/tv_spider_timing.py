@@ -91,7 +91,6 @@ class TVSpiderTiming(TB):
 def main(ft):
     tt = TVSpiderTiming(ft)
     tt.detail()
-    time.sleep(1)
     cm = CSV2MD(ft)
     cm.save_timing()
 

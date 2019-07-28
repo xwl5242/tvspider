@@ -35,7 +35,6 @@ class CSV2MD:
                     else:
                         v = tv_json.get(k)
                     tv_o[k] = v
-            tv_o['img_save'] = '0'
             return tv_o
         except Exception as e:
             logging.error(repr(e))
