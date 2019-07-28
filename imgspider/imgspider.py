@@ -41,7 +41,7 @@ class ImgSpider:
         """
         :return:
         """
-        tvs = self.db.find_one('t_tv_all', f" img_save=%s ", '0')
+        tvs = self.db.find_all('t_tv_all', f" img_save=%s ", '0')
         tvs = [(tv['tv_id'], tv['tv_img']) for tv in tvs]
         batch = int(len(tvs) / 50) + 1
         for i in range(batch):

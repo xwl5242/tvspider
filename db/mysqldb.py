@@ -63,6 +63,14 @@ class DB:
 
     @staticmethod
     @app_db
+    def find_all(cursor, table_name, where_str, args):
+        sql = f"select * from {table_name} where 1=1 and {where_str}"
+        cursor.execute(sql, args)
+        tvs = cursor.fetchall()
+        return tvs if tvs and len(tvs) > 0 else []
+
+    @staticmethod
+    @app_db
     def update_tv(cursor, table_name, update_str, update_args, tv_id):
         sql = f"update {table_name} set {update_str} where tv_id=%s"
         cursor.execute(sql, (update_args, tv_id))
