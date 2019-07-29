@@ -32,6 +32,11 @@ class DB:
 
     @staticmethod
     @app_db
+    def execute(cursor, sql):
+        cursor.execute(sql)
+
+    @staticmethod
+    @app_db
     def insert(cursor, table_name, tv):
         assert isinstance(tv, dict), 'insert param need dict type'
         tv = dict(tv)
